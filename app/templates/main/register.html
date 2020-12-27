@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class = "container">
+        <div class="row mt-5">
+            <h1>회원가입</h1>
+        </div>
+        <div class="row mt-5">
+        <div class="col-12">
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="customerid">아이디</label>
+                    <input type="text" class="form-control" placeholder="ex)111-11-1111" id="customerid" name="customerid"/>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">성</label>
+                    <input type="text" class="form-control" placeholder="ex)오" id="lastname" name="lastname"/>
+                </div>
+                <div class="form-group">
+                    <label for="firstname">이름</label>
+                    <input type="text" class="form-control" placeholder="ex)규석" id="firstname" name="firstname"/>
+                </div>
+                <div class="form-group">
+                    <label for="address">주소</label>
+                    <input type="text" class="form-control" placeholder="ex)123 Success Street" id="address" name="address"/>
+                </div>
+                <div class="form-group">
+                    <label for="city">시</label>
+                    <input type="text" class="form-control" placeholder="ex)용인시" id="city" name="city"/>
+                </div>
+                <div class="form-group">
+                    <label for="state">도</label>
+                    <input type="text" class="form-control" placeholder="ex)경기도" id="state" name="state"/>
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">우편번호</label>
+                    <input type="text" class="form-control" placeholder="ex)11790" id="zipcode" name="zipcode"/>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">전화번호</label>
+                    <input type="text" class="form-control" placeholder="ex)010-6449-5262" id="telephone" name="telephone"/>
+                </div>
+                <div class="form-group">
+                    <label for="accountnum">계정 번호</label>
+                    <input type="text" class="form-control" placeholder="ex)1" id="accountnum" name="accountnum"/>
+                </div>
+                <div class="form-group">
+                    <label for="accounttype">계정 타입</label>
+                    <br>
+                    <select id="accounttype" name="accounttype">
+                        <option value="" disabled selected>계정 타입 선택</option>
+                        <option value="limited">limited</option>
+                        <option value="unlimited">unlimited</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control" placeholder="ex)1234@naver.com" id="email" name="email"/>
+                </div>
+                <div class="form-group">
+                    <label for="creditcard">계좌번호</label>
+                    <input type="text" class="form-control" placeholder="ex)1234-5678-1234-5678" id="creditcard" name="creditcard"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">등록</button>
+            </form>
+        </div>
+        </div>
+</body>
+</html>

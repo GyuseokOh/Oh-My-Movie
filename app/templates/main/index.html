@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<header>
+		<div style="width:90%; margin:0 auto;">
+			<a href='/' style="float:left; margin-bottom:20px; font-weight:bold; font-size:20px">Oh, My Movie!<a>
+			{%if 'user' in session%}
+			<a href='/logout' style="display:inline;font-size:20px; float:right; font-weight:bold; border:none; float:right;">"{{session['user']}}" Logout</a>
+			{% else %}
+			<a href='/login' style="display:inline;font-size:20px; float:right; font-weight:bold; border:none; float:right;">Login</a>
+			{%endif%}
+			<img src="{{ url_for('static', filename='image/banner.png') }}">
+		</div>
+	</header>
+	<nav>
+		<div class="top-bar con">
+				<nav class="menu-box-1">
+					<ul class="row">
+						<li class="cell">
+							<a class="block">User</a>
+							<div class="relative"><!-- 서브메뉴를 위한 유령의 집 -->
+								<div><!-- overflow:hidden; 때문에 존재한다. -->
+									<ul>
+										<li><a class="block" href="/customerMovie">Ordered Movie</a></li>
+										<li><a class="block" href="/customerQueue">Movie Wishlist</a></li>
+										<li><a class="block" href="/customerAccount">Account Info</a></li>
+										<li><a class="block" href="/suggestMovies">Movie Recommendation</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="cell">
+							<a class="block">Movie</a>
+							<div class="relative">
+								<div>
+									<ul>
+										<li><a class="block" href="/availableTypeMovie">Find by Type</a></li>
+										<li><a class="block" href="/findMoviebyword">Find by Words</a></li>
+										<li><a class="block" href="/findMoviebyActor">Find by Actors</a></li>
+										<li><a class="block" href="/findBestsellerMovie">Best Selling Movies</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="cell">
+							<a class="block">Others</a>
+							<div class="relative">
+								<div>
+									<ul>
+										<li><a class="block" href="/register">Sign Up</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</nav>
+				<!-- 유령의 집, 단순한 기준점, 높이 : 항상 0 -->
+				<div class="sub-menu-bg relative">
+					<!-- 서브메뉴배경 래퍼, 존재이유 : overflow:hidden;, 평소 높이 : 0, 활성화 높이 : 470px -->
+					<div>
+						<!-- 서브메뉴배경, 높이 : 항상 470px, 평소 transform:translateY(-100%), 활성화 transform:translateY(0) -->
+						<div></div>
+					</div>
+				</div>
+			</a>
+		</div>
+	</nav>
+	<section>
+		{%if movielist is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Movie List</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Title</th>
+						<th>Type</th>
+						<th>Number of Copy</th>
+						<th>Rating</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in movielist %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+						<td>{{movie['movie_type']}}</td>
+						<td>{{movie['number_of_copy']}}</td>
+						<td>{{movie['rating']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif orderlist is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Ordered Movie</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Ordered Movie</th>
+						<th>My Rating</th>
+						<th>Do Rating</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in orderlist %}
+					<tr>
+						<td>{{movie['ordered_movie']}}</td>
+						<td>{{movie['rating']}}</td>
+						<td>
+							<form id='ratingselect' action="/rateMovie" method="POST">
+								  <select name="point">
+									  <option value=1>1 Point</option>
+									  <option value=2>2 Point</option>
+									  <option value=3>3 Point</option>
+									  <option value=4>4 Point</option>
+									  <option value=5>5 Point</option>
+								  </select>
+								<input type="hidden" name="moviename" value="{{movie['ordered_movie']}}">
+							  <button type="submit">Submit</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif customerqueue is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>My Movie WishList</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Movie Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in customerqueue %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif accountdata is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>My Account Information</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Account Type</th>
+						<th>Credit Card</th>
+						<th>Account Created Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for account in accountdata %}
+					<tr>
+						<td>{{account['account_type']}}</td>
+						<td>{{account['credit_card']}}</td>
+						<td>{{account['acc_create_date']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif recmovie is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Recommendation Movie</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Movie Name</th>
+						<th>Movie Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in recmovie %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+						<td>{{movie['movie_type']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif findmovietype is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Find Movie By Type {{type}}</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Movie Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in findmovietype %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif findmovieword is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Find Movie By Word {{words}}</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Movie Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in findmovieword %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif findmovieactor is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Find Movie By Actor {{actors}}</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					{%if actors|length==1%}
+					<tr>
+						<th>Movie Name</th>
+						<th>Actor Name</th>
+					</tr>
+					{%else%}
+					<tr>
+						<th>Movie Name</th>
+						<th>Actor Name</th>
+						<th>Actor Name</th>
+					</tr>
+					{%endif%}
+				</thead>
+				<tbody>
+					{% for movie in findmovieactor %}
+					<tr>
+						{%if actors|length==1%}
+						<td>{{movie['movie_name']}}</td>
+						<td>{{movie['actor_name']}}</td>
+						{%else%}
+						<td>{{movie['movie_name']}}</td>
+						<td>{{movie['actor_name']}}</td>
+						<td>{{movie['a2.actor_name']}}</td>
+						{%endif%}
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%elif bestsellingmovies is defined%}
+		<div style="width:90%; margin:0 auto; text-align:center">
+			<h1>Best Selling Movies</h1>
+			<table style="width:100%;">
+				<thead style="text-align:center;background-color:gray">
+					<tr>
+						<th>Movie Name</th>
+						<th>Number of Copies</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for movie in bestsellingmovies %}
+					<tr>
+						<td>{{movie['movie_name']}}</td>
+						<td>{{movie['number_of_copy']}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{%endif%}
+	</section>
+</body>
+</html>
